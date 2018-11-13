@@ -64,13 +64,13 @@ export function chatbot(server) {
           const type = types[output.type];
           if (!type) throw new Error(`Unknown type returned from command: ${output.type}`);
 
-          return type().fn(output.value, message, handlers);
+          return type().fn(server, output.value, message, handlers);
         })
       )
         .then(done)
         .catch(e => {
           done();
-          postMessageToSlack(channel, `COMMAND FAILED: \`${e.message}\``);
+          postMessageToSlack(server, channel, `COMMAND FAILED: \`${e.message}\``);
         });
     });
   });

@@ -3,12 +3,16 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-import { token, name } from '../config.json';
 import slack from './slack';
 
-export default (to, text, params = {}) => {
-  return slack.chat.postMessage({
-    token,
+export default (server, to, text, params = {}) => {
+
+  const config = server.config();
+  const chattoken = config.get('xpack.chatops.chattoken');
+  const name = config.get('xpack.chatops.chatname');
+
+  return slack(server).chat.postMessage({
+    chattoken,
     text,
     username: name,
     as_user: true,

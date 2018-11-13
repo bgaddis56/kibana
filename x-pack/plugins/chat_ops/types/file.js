@@ -6,8 +6,8 @@
 import { uploadToSlack } from '../lib/upload_to_slack';
 
 export default () => ({
-  fn: (output, message, handlers) => {
-    return uploadToSlack({
+  fn: (server, output, message, handlers) => {
+    return uploadToSlack(server, {
       ...output,
       channels: handlers.getTo(),
     });

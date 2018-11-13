@@ -5,10 +5,10 @@
  */
 
 import commands from './commands';
-import { name } from './config.json';
 import normalizeOutput from './lib/normalize_output';
 
 export default (str, data, handlers, server) => {
+  const name = server.config().get('xpack.chatops.chatname');
   const parts = str.trim().split(' '); // Split by space
   const commandName = parts.shift();
   const commandArgument = parts.join(' ').trim();

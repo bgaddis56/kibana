@@ -4,8 +4,11 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 import Slack from 'slack';
-import { token } from '../config.json';
 
-const slack = new Slack({ token });
+export default (server) => {
+  const config = server.config();
+  const token = config.get('xpack.chatops.chattoken');
 
-export default slack;
+  const slack = new Slack({ token });
+  return slack;
+};

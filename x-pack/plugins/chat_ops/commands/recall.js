@@ -6,7 +6,7 @@
 import client from '../lib/es_client';
 import run from '../run';
 
-export default () => ({
+export default (server) => ({
   help: 'Run a command that has been stored with `store`',
   example: 'recall mycommand',
   fn: (args, message, handlers) => {
@@ -21,7 +21,7 @@ export default () => ({
         id: name,
       })
       .then(doc => {
-        return run(doc._source.command, message, handlers);
+        return run(doc._source.command, message, handlers, server);
       })
       .catch(resp => resp.message);
   },

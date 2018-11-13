@@ -3,10 +3,9 @@
  * or more contributor license agreements. Licensed under the Elastic License;
  * you may not use this file except in compliance with the Elastic License.
  */
-import { name } from '../config.json';
 import commands from './index';
 
-export default () => ({
+export default (server) => ({
   help: 'Get a list of commands, or help for a command',
   example: 'who',
   fn: args => {
@@ -18,9 +17,9 @@ export default () => ({
       .sort()
       .join(
         ', '
-      )}. For more information on a function, try something like: \`@${name} help random\``;}
+      )}. For more information on a function, try something like: \`@${server.config().get('xpack.chatops.chatname')} help random\``;}
 
-    return `${commandName}: ${command().help}. For example: \`@${name} ${commandName} ${
+    return `${commandName}: ${command().help}. For example: \`@${server.config().get('xpack.chatops.chatname')} ${commandName} ${
       command().example
     }\``;
   },

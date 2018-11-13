@@ -4,9 +4,9 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 import client from '../lib/es_client';
-import config from '../config.json';
+//import config from '../config.json';
 
-export default () => ({
+export default (server) => ({
   help: 'Remember a command with a given name, and recall it with the `recall` command',
   example: 'store real-cute kitten 640 480',
   fn: (args, message) => {
@@ -32,13 +32,13 @@ export default () => ({
       })
       .then(
         () =>
-          `Check. I'll remember that. You can get it back with \`@${config.name} recall ${name}\``
+          `Check. I'll remember that. You can get it back with \`@${server.config().get('xpack.chatops.chatname')} recall ${name}\``
       )
       .catch(err => {
         console.log("error " + err.message);
         if (err.status === 409)
         {return `Oops, \`${name}\` already exists. Remove it with \`@${
-          config.name
+          server.config().get('xpack.chatops.chatname')
         } remove ${name}\``;}
         return err.message;
       });

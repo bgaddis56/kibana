@@ -6,5 +6,5 @@
 import postMessageToSlack from '../lib/post_message_to_slack';
 
 export default () => ({
-  fn: (output, message, handlers) => postMessageToSlack(handlers.getTo(), output),
+  fn: (server, output, message, handlers) => postMessageToSlack(server, handlers.getTo(), output),
 });
