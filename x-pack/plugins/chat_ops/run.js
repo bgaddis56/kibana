@@ -8,7 +8,7 @@ import commands from './commands';
 import { name } from './config.json';
 import normalizeOutput from './lib/normalize_output';
 
-export default (str, data, handlers) => {
+export default (str, data, handlers, server) => {
   const parts = str.trim().split(' '); // Split by space
   const commandName = parts.shift();
   const commandArgument = parts.join(' ').trim();
@@ -27,5 +27,5 @@ export default (str, data, handlers) => {
     );
   }
 
-  return Promise.resolve(command().fn(commandArgument, data, handlers)).then(normalizeOutput);
+  return Promise.resolve(command(server).fn(commandArgument, data, handlers)).then(normalizeOutput);
 };

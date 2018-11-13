@@ -35,11 +35,12 @@ export default () => ({
           `Check. I'll remember that. You can get it back with \`@${config.name} recall ${name}\``
       )
       .catch(err => {
+        console.log("error " + err.message);
         if (err.status === 409)
         {return `Oops, \`${name}\` already exists. Remove it with \`@${
           config.name
         } remove ${name}\``;}
-        return err.error.reason;
+        return err.message;
       });
   },
 });

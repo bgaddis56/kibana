@@ -6,7 +6,7 @@
 import fetch from 'axios';
 import rison from 'rison-node';
 
-export default () => ({
+export default (server) => ({
   help: 'Get a snapshot of a dashboard back',
   example: 'dashboard 722b74f0-b882-11e8-a6d9-e546fe2bba5f',
   fn: args => {
@@ -15,7 +15,7 @@ export default () => ({
     const dashboardID = args.split(' ')[0];
     const dashboardURL = `/app/kibana#/dashboard/${dashboardID}`;
 
-    const config = {
+    const chatconfig = {
       browserTimezone: 'America/Phoenix',
       layout: {
         dimensions: {
@@ -23,18 +23,22 @@ export default () => ({
           height: 720,
         },
       },
-      objectType: 'canvas workpad',
+      objectType: 'dashboard',
       relativeUrl: dashboardURL,
       title: 'Foo',
     };
 
-    const encoded = rison.encode(config);
+    const encoded = rison.encode(chatconfig);
 
     const URL2 = `http://localhost:5601/api/reporting/generate/png?jobParams=${encodeURIComponent(
       encoded
     )}`;
 
-    const data = 'elastic:changeme';
+    const config = server.config();
+    const chatusername = config.get('xpack.chatops.userid');
+    const chatuserpwd = config.get('xpack.chatops.userpwd');
+
+    const data = chatusername + ':' + chatuserpwd;
     const buff = new Buffer(data);
     const base64data = buff.toString('base64');
 

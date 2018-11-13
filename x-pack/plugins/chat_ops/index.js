@@ -9,7 +9,6 @@ import { chatbot } from './bot';
 import { resolve } from 'path';
 
 export const chatops = (kibana) => {
-  console.log("got to plugin");
   return new kibana.Plugin({
     id: 'chatops',
     configPrefix: 'xpack.chatops',
@@ -22,11 +21,11 @@ export const chatops = (kibana) => {
         enabled: Joi.boolean().default(true),
         chattoken: Joi.string().default('test'),
         chatname: Joi.string().default('test'),
+        userid: Joi.string().default('test'),
+        userpwd: Joi.string().default('test'),
       }).default();
     },
     init: function (server) {
-      console.log("got to index");
-
       const thisPlugin = this;
       const xpackMainPlugin = server.plugins.xpack_main;
       mirrorPluginStatus(xpackMainPlugin, thisPlugin);

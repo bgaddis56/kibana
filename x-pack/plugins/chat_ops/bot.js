@@ -9,7 +9,6 @@ import types from './types';
 import postMessageToSlack from './lib/post_message_to_slack';
 
 export function chatbot(server) {
-  console.log("got here");
   const config = server.config();
 
   const chattoken = config.get('xpack.chatops.chattoken');
@@ -61,7 +60,7 @@ export function chatbot(server) {
       };
 
       Promise.resolve(
-        run(input, message, handlers).then(output => {
+        run(input, message, handlers, server).then(output => {
           const type = types[output.type];
           if (!type) throw new Error(`Unknown type returned from command: ${output.type}`);
 
