@@ -25,7 +25,7 @@ export default (server) => ({
       },
       objectType: 'dashboard',
       relativeUrl: dashboardURL,
-      title: 'Foo',
+      title: 'Dashboard',
     };
 
     const encoded = rison.encode(chatconfig);

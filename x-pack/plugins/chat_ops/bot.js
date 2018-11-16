@@ -18,11 +18,13 @@ export function chatbot(server) {
   const inputBot = new Slackbot({ token: chattoken, name });
 
   inputBot.on('open', () => {
-    console.log(`${name} reporting for duty`);
+    console.log(`${name} started successfully`);
+    //poll();
+
   });
 
   inputBot.on('close', () => {
-    console.log(`${name} disconected :(`);
+    console.log(`${name} disconected`);
   });
 
   inputBot.getUser(name).then(me => {
@@ -50,7 +52,7 @@ export function chatbot(server) {
         inputBot.postEphemeral(
           channel,
           user,
-          'This is taking awhile, sorry about that. Workin real hard over here. Sometimes images take awhile'
+          'Sometimes report images take awhile, sorry about that.'
         );
       }, 8000);
 

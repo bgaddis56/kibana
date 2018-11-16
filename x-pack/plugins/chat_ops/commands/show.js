@@ -5,25 +5,24 @@
  */
 import client from '../lib/es_client';
 
-export default () => ({
+export default (server) => ({
   help: 'Show the text of a stored command',
   example: 'show mycommand',
   fn: args => {
     const name = args.trim();
 
-    if (!name) throw new Error('name is required');
+    if (!name) throw new Error('Stored shortcut name is required');
 
-    return client
-      .get({
-        index: '.moostme',
-        type: 'doc',
-        id: name,
+    return client(server)
+      .find({
+        type: 'chatop',
+        name: name,
       })
       .then(doc => {
         return `Here's what I found for \`${name}\`: 
 
 \`\`\`
-${doc._source.command}
+${doc.saved_objects[0].attributes.command}
 \`\`\``;
       })
       .catch(resp => resp.message);

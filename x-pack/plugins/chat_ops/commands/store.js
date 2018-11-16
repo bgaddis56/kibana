@@ -4,11 +4,10 @@
  * you may not use this file except in compliance with the Elastic License.
  */
 import client from '../lib/es_client';
-//import config from '../config.json';
 
 export default (server) => ({
   help: 'Remember a command with a given name, and recall it with the `recall` command',
-  example: 'store real-cute kitten 640 480',
+  example: 'store dashboard xxxx-xxxx-xxxx-xxxx',
   fn: (args, message) => {
     const parts = args.split(' ');
     const name = parts.shift();
@@ -16,26 +15,18 @@ export default (server) => ({
 
     if (!name || !command) throw new Error('Name and command are required');
 
-    const doc = {
-      name,
-      command,
-      owner: message.user,
-      '@timestamp': new Date().toISOString(),
-    };
-
-    return client
-      .create({
-        index: '.moostme',
-        type: 'doc',
-        id: name,
-        body: doc,
+    return client(server)
+      .create("chatop", {
+        name,
+        command,
+        owner: message.user,
+        '@timestamp': new Date().toISOString(),
       })
       .then(
         () =>
-          `Check. I'll remember that. You can get it back with \`@${server.config().get('xpack.chatops.chatname')} recall ${name}\``
+          `Shortcut has been stored. You can get it back with \`@${server.config().get('xpack.chatops.chatname')} recall ${name}\``
       )
       .catch(err => {
-        console.log("error " + err.message);
         if (err.status === 409)
         {return `Oops, \`${name}\` already exists. Remove it with \`@${
           server.config().get('xpack.chatops.chatname')

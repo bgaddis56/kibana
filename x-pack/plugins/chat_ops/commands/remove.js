@@ -5,21 +5,29 @@
  */
 import client from '../lib/es_client';
 
-export default () => ({
+export default (server) => ({
   help: 'Remove a command that has been stored with `store`',
   example: 'remove myCommand',
   fn: args => {
     const name = args.trim();
+    let docid = '';
 
-    if (!name) throw new Error('name is required');
+    if (!name) throw new Error('Stored command name is required');
 
-    return client
-      .delete({
-        index: '.moostme',
-        type: 'doc',
-        id: name,
+    return client(server)
+      .find({
+        type: 'chatop',
+        name: name,
       })
-      .then(() => `Ok done, I removed the stored command \`${name}\``)
+      .then(doc => {
+        docid = doc.saved_objects[0].id;
+        return client(server)
+          .delete("chatop",
+            docid,
+          )
+          .then(() => `The stored command \`${name}\` has been removed.`)
+          .catch(resp => resp.message);
+      })
       .catch(resp => resp.message);
-  },
+  }
 });

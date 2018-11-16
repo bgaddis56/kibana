@@ -15,7 +15,7 @@ export default (str, data, handlers, server) => {
 
   // No command found
   if (commandName === '') {
-    throw new Error(`Hey! Bozo! I'm not a mind reader. What do you want? Try: \`@${name} help\``);
+    throw new Error(`No command entered. Try: \`@${name} help\``);
   }
 
   const command = commands[commandName];
@@ -23,7 +23,7 @@ export default (str, data, handlers, server) => {
   // Invalid command
   if (!command) {
     throw new Error(
-      `What? I have no idea what "${commandName}" is. You're not making any sense. Try: \`@${name} help\``
+      `Invalid command "${commandName}". Try: \`@${name} help\``
     );
   }
 

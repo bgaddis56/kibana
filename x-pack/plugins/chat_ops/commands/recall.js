@@ -14,14 +14,13 @@ export default (server) => ({
 
     if (!name) throw new Error('name is required');
 
-    return client
-      .get({
-        index: '.moostme',
-        type: 'doc',
-        id: name,
+    return client(server)
+      .find({
+        type: 'chatop',
+        name: name,
       })
       .then(doc => {
-        return run(doc._source.command, message, handlers, server);
+        return run(doc.saved_objects[0].attributes.command, message, handlers, server);
       })
       .catch(resp => resp.message);
   },
